@@ -1,3 +1,5 @@
+This is a port of shinyquagsire23's Infinite Campus API to Android
+See his readme below:
 **Infinite Campus API**
 
 This is a simple API for the grading system Infinite Campus. It is currently implemented in Java and was created using protocols reversed from Wireshark and the disassemblies of the Infinite Campus App. From there it was just parsing the ungodly XML files the site spit out and turning it into actual, organized data.

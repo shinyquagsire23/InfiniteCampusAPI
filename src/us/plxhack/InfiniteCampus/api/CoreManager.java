@@ -3,16 +3,11 @@ package us.plxhack.InfiniteCampus.api;
 //import android.os.AsyncTask;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import us.plxhack.InfiniteCampus.api.district.DistrictInfo;
@@ -40,6 +35,11 @@ public class CoreManager
 	public DistrictInfo getDistrictInfo()
 	{
 		return distInfo;
+	}
+	
+	public String getDistrictCode()
+	{
+		return districtCode;
 	}
 	
 	public boolean attemptLogin(String user, String pass, DistrictInfo distInfo)

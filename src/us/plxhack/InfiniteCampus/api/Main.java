@@ -25,10 +25,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Main
 {
-	public static String districtCode = "ZLSBJB";
+	public static String districtCode = "XKTDKL";
 	static PrintWriter out;
 
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args) throws ValidityException, ParsingException, IOException
 	{
 		File f = new File("grades.txt");
 		if (f.exists())
@@ -52,12 +52,13 @@ public class Main
 
 		print("Attempting login...");
 		Console console = System.console();
-		console.printf("Username: ");
-		String username = console.readLine();
+		print("Username: ");
+		//put username here
+		String username = "";
 
-		console.printf("Password: ");
-		char[] passwordChars = console.readPassword();
-		String passwordString = new String(passwordChars);
+		print("Password: ");
+		//put password here
+		String passwordString = "";
 
 		print("Logging into user " + username + "...");
 		boolean successfulLogin = core.attemptLogin(username, passwordString, core.getDistrictInfo());
@@ -69,7 +70,7 @@ public class Main
 			return;
 		}
 
-		URL infoURL = new URL("https://campus.ccsd.net/campus/prism?x=portal.PortalOutline&appName=" + core.getDistrictInfo().getDistrictAppName());
+		URL infoURL = new URL("https://ic.d214.org/campus/prism?x=portal.PortalOutline&appName=" + core.getDistrictInfo().getDistrictAppName());
 		Builder builder = new Builder();
 		Document doc = builder.build(new ByteArrayInputStream(core.getContent(infoURL, false).getBytes()));
 		Element root = doc.getRootElement();
@@ -77,8 +78,8 @@ public class Main
 		print("\n");
 		print(user.getInfoString());
 
-		URL infoURL2 = new URL("https://campus.ccsd.net/campus/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
-		print("https://campus.ccsd.net/campus/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
+		URL infoURL2 = new URL("https://ic.d214.org/campus/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
+		print("https://ic.d214.org/campus/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
 		Document doc2 = builder.build(new ByteArrayInputStream(core.getContent(infoURL2, false).getBytes()));
 		ClassbookManager manager = new ClassbookManager(doc2.getRootElement().getFirstChildElement("SectionClassbooks"));
 		print(manager.getInfoString());

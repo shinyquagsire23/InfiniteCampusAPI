@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-a85287dc3191aba9e0ac856c9988fbb56a93b3db.jar" />
+    </item>
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/libs/jackson-core-2.5.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e2a00ad1d7e540ec395e9296a34da484c8888d4d">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/jackson-core-2.5.1-526bb105234f14836e6d8066a2e90f4d5dd0950f.jar" />
+    </item>
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/classes-71dc868cb585ba64df1f59803a3165cf0dac665b.jar" />
+    </item>
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/libs/xom-1.2.10.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4165e25bef19aad134f6498cc277110b9bc5e52b">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/xom-1.2.10-637951eebf6013d911e396a037c1bbb3f614071d.jar" />
+    </item>
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/libs/jackson-annotations-2.5.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="71c1992c0cf5e0ce62574e96009572062ba0f4d9">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.5.1-864ad28f672c711773bc915db5bc5a98921314f2.jar" />
+    </item>
+    <item
+        jar="/home/nick/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-cade012b56fda5c790a653a0c523adda75d58c8a.jar" />
+    </item>
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/classes-754bce2a3d0acb190897eb35eadfc7d91be68ede.jar" />
+    </item>
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/libs/jackson-databind-2.5.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5e57baebad3898aca8a825adaf2be6fd189442f2">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/jackson-databind-2.5.1-c96e0ba8bed23bb78c9e272b0492e7158a61dd4c.jar" />
+    </item>
+    <item
+        jar="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/home/nick/AndroidStudioProjects/MaterialCampus/app/build/intermediates/pre-dexed/debug/classes-d4095c8db8ed29450c18eaed4c95e1a9b3414708.jar" />
+    </item>
+
+</items>

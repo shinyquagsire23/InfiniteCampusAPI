@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
@@ -15,8 +16,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import us.plxhack.InfiniteCampus.api.InfiniteCampusApi;
 import us.plxhack.InfiniteCampus.api.Student;
@@ -33,6 +39,7 @@ public class LoginActivity extends Activity
     private EditText mUsernameView;
     private EditText mDistrictView;
     private EditText mPasswordView;
+    private CheckBox mSavingInfo;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -46,6 +53,7 @@ public class LoginActivity extends Activity
         mUsernameView = (EditText) findViewById(R.id.username);
         mDistrictView = (EditText) findViewById(R.id.district_code);
         mPasswordView = (EditText) findViewById(R.id.password);
+        mSavingInfo = (CheckBox) findViewById(R.id.remember_info);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -67,6 +75,30 @@ public class LoginActivity extends Activity
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        try
+        {
+            FileInputStream file = openFileInput("login_info");
+
+            int distLength, userLength, passLength;
+
+            distLength = (int)file.read();
+            userLength = (int)file.read();
+            passLength = (int)file.read();
+
+            byte[] district = new byte[distLength];
+            byte[] user = new byte[userLength];
+            byte[] pass = new byte[passLength];
+
+            file.read( district );
+            file.read( user );
+            file.read( pass );
+
+            file.close();
+
+            login( new String(district), new String(user), new String(pass), false );
+        }
+        catch (Exception e) { e.printStackTrace(); }
     }
 
     public void attemptLogin()
@@ -119,13 +151,17 @@ public class LoginActivity extends Activity
         }
         else
         {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask( this, district, username, password );
-            mAuthTask.execute((Void) null);
+            login( district, username, password, true );
         }
     }
+
+    void login( String district, String username, String password, boolean save )
+    {
+        showProgress(true);
+        mAuthTask = new UserLoginTask( this, district, username, password, save );
+        mAuthTask.execute((Void) null);
+    }
+
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -171,16 +207,18 @@ public class LoginActivity extends Activity
         private final String mUser;
         private final String mPassword;
         private final String mDistrict;
+        private final boolean saving;
 
         private final Activity parentActivity;
 
-        UserLoginTask( Activity a, String district, String user, String password)
+        UserLoginTask( Activity a, String district, String user, String password, boolean save )
         {
             parentActivity = a;
 
             mDistrict = district;
             mUser = user;
             mPassword = password;
+            saving = save;
         }
 
         @Override
@@ -197,7 +235,24 @@ public class LoginActivity extends Activity
 
             if (success)
             {
-                InfiniteCampusApi.printDebugInfo();
+                if (saving)
+                {
+                    try
+                    {
+                        FileOutputStream file = openFileOutput( "login_info", Context.MODE_PRIVATE );
+
+                        file.write( mDistrict.length() );
+                        file.write( mUser.length() );
+                        file.write( mPassword.length() );
+
+                        file.write( mDistrict.getBytes() );
+                        file.write( mUser.getBytes() );
+                        file.write( mPassword.getBytes() );
+
+                        file.close();
+                    }
+                    catch (Exception e){ e.printStackTrace(); }
+                }
 
                 Intent intent = new Intent( parentActivity, ClassesActivity.class );
                 startActivity( intent );

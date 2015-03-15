@@ -197,6 +197,8 @@ public class LoginActivity extends Activity
 
             if (success)
             {
+                InfiniteCampusApi.printDebugInfo();
+
                 Intent intent = new Intent( parentActivity, ClassesActivity.class );
                 startActivity( intent );
             }

@@ -57,10 +57,11 @@ public class Student
 		String userInfo = "Information for " + firstName + " " + middleName + " " + lastName + ":\nStudent Number: " + studentNumber + "\nPerson ID: " + personID + "\nPicture URL: " + getPictureURL() + "\nIs Guardian? " + isGuardian + "\n\n===Calendars===";
 		
 		for(Calendar c : calendars)
-		{
 			userInfo += "\n" + c.getInfoString();
-		}
-		
+
+        for (Classbook cb : classbooks)
+            userInfo += "\n" + cb.getInfoString();
+
 		return userInfo;
 	}
 }

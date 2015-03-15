@@ -3,6 +3,7 @@
 /gradle/local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/build/
 local.properties
 .gradle
 *.iml

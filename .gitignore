@@ -1,1 +1,7 @@
 /bin/
+/gen/
+/gradle/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+local.properties
+.gradle

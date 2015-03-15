@@ -3,8 +3,7 @@ package us.plxhack.InfiniteCampus.api;
 import java.util.ArrayList;
 
 import us.plxhack.InfiniteCampus.api.calendar.Calendar;
-import us.plxhack.InfiniteCampus.api.classbook.Classbook;
-import us.plxhack.InfiniteCampus.api.classbook.GradingDetailSummary;
+import us.plxhack.InfiniteCampus.api.course.Course;
 import us.plxhack.InfiniteCampus.api.district.DistrictInfo;
 import nu.xom.*;
 
@@ -19,8 +18,7 @@ public class Student
 	public String isGuardian;
 	
 	public ArrayList<Calendar> calendars = new ArrayList<Calendar>();
-	public GradingDetailSummary gradeDetailSummary;
-	public ArrayList<Classbook> classbooks = new ArrayList<Classbook>();
+	public ArrayList<Course> courses = new ArrayList<Course>();
 	
 	private DistrictInfo distInfo;
 	
@@ -41,9 +39,6 @@ public class Student
 		isGuardian = userElement.getAttributeValue("isGuardian");
 		for(int i = 0; i < userElement.getChildElements("Calendar").size(); i++)
 			calendars.add(new Calendar(userElement.getChildElements("Calendar").get(i)));
-		gradeDetailSummary = new GradingDetailSummary(userElement.getFirstChildElement("GradingDetailSummary"));
-		for(int i = 0; i < userElement.getChildElements("Classbook").size(); i++)
-			classbooks.add(new Classbook(userElement.getChildElements("Classbook").get(i)));
 	}
 	
 	public String getPictureURL()
@@ -59,8 +54,8 @@ public class Student
 		for(Calendar c : calendars)
 			userInfo += "\n" + c.getInfoString();
 
-        for (Classbook cb : classbooks)
-            userInfo += "\n" + cb.getInfoString();
+        for (Course cb : courses)
+            cb.printDebugInfo();
 
 		return userInfo;
 	}

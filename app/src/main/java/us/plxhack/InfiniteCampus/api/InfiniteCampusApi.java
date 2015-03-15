@@ -2,12 +2,17 @@ package us.plxhack.InfiniteCampus.api;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
-import us.plxhack.InfiniteCampus.api.classbook.ClassbookManager;
+import nu.xom.Elements;
+import nu.xom.Node;
+import us.plxhack.InfiniteCampus.api.course.Activity;
+import us.plxhack.InfiniteCampus.api.course.Category;
 import us.plxhack.InfiniteCampus.api.district.DistrictInfo;
+import us.plxhack.InfiniteCampus.api.course.Course;
 
 public class InfiniteCampusApi
 {
@@ -50,31 +55,93 @@ public class InfiniteCampusApi
 
 		try
 		{
-			//Get User information from formatted web page
-			URL infoURL = getFormattedURL("prism?x=portal.PortalOutline&appName=" + core.getDistrictInfo().getDistrictAppName());
-			Builder builder = new Builder();
-			Document doc = builder.build(new ByteArrayInputStream(core.getContent(infoURL, false).getBytes()));
-			Element root = doc.getRootElement();
-			
-			userInfo = new Student(root.getFirstChildElement("PortalOutline").getFirstChildElement("Family").getFirstChildElement("Student"), core.getDistrictInfo());
+            Builder builder = new Builder();
+            {
+                //Get User information from formatted web page
+                URL infoURL = getFormattedURL("prism?x=portal.PortalOutline&appName=" + core.getDistrictInfo().getDistrictAppName());
+                Document doc = builder.build(new ByteArrayInputStream(core.getContent(infoURL, false).getBytes()));
+                Element root = doc.getRootElement();
+
+                userInfo = new Student(root.getFirstChildElement("PortalOutline").getFirstChildElement("Family").getFirstChildElement("Student"), core.getDistrictInfo());
+            }
 	
 			//Get classbook information from formatted web page
 			URL infoURL2 = getFormattedURL("prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + userInfo.personID + "&structureID=" + userInfo.calendars.get(0).schedules.get(0).id + "&calendarID=" + userInfo.calendars.get(0).calendarID);
 			Document doc2 = builder.build(new ByteArrayInputStream(core.getContent(infoURL2, false).getBytes()));
-			
-			ClassbookManager classbookInfo = new ClassbookManager(doc2.getRootElement().getFirstChildElement("SectionClassbooks"));
 
-            //please excuse this ungodly mess
-            for (int i=0; i < classbookInfo.portalclassbooks.size(); ++i)
+            Element root = doc2.getRootElement().getFirstChildElement("SectionClassbooks");
+            ArrayList<Element> courseElements = new ArrayList<Element>();
+
+            for (int i=0;i < root.getChildCount();++i)
             {
-                for (int j=0;j < classbookInfo.portalclassbooks.get(i).students.size();++j)
-                {
-                    for (int k=0;k < classbookInfo.portalclassbooks.get(i).students.get(j).classbooks.size();++k)
-                    {
-                        userInfo.classbooks.add( classbookInfo.portalclassbooks.get(i).students.get(j).classbooks.get(k));
-                    }
-                }
+                Element portalClassbook = root.getChildElements().get(i);
+                Element studentList = portalClassbook.getFirstChildElement("ClassbookDetail").getFirstChildElement("StudentList");
+
+                if (studentList.getChildCount() != 0)
+                    courseElements.add( portalClassbook.getFirstChildElement("ClassbookDetail").getFirstChildElement("StudentList").getChildElements().get(0).getFirstChildElement("Classbook") );
             }
+
+            ArrayList<Course> courses = new ArrayList<Course>();
+
+            for (int i=0;i < courseElements.size();++i)
+            {
+                Element e = courseElements.get(i);
+
+                Course c = new Course( Integer.valueOf( e.getAttributeValue("courseNumber") ), e.getAttributeValue("courseName"), e.getAttributeValue("teacherDisplay") );
+
+                Elements tasks = e.getFirstChildElement("tasks").getChildElements();
+                Element finalTask = null;
+
+                for (int j=0;j < tasks.size();++j)
+                {
+                    if (tasks.get(j).getAttributeValue("name").equalsIgnoreCase("final"))
+                        finalTask = tasks.get(j);
+                }
+
+                c.percentage = Float.valueOf(finalTask.getAttributeValue("percentage"));
+                c.letterGrade = finalTask.getAttributeValue("letterGrade").charAt(0);
+
+                Element finalTaskGroups = finalTask.getFirstChildElement("tasks").getFirstChildElement("ClassbookTask").getFirstChildElement("groups");
+
+                for (int j=0;j < finalTaskGroups.getChildCount();++j)
+                {
+                    Element groupElement = finalTaskGroups.getChildElements().get(j);
+
+                    Category category = new Category( groupElement.getAttributeValue("name") );
+                    category.percentage = Float.valueOf( groupElement.getAttributeValue("percentage") );
+                    category.earnedPoints = Float.valueOf( groupElement.getAttributeValue("pointsEarned") );
+                    category.totalPoints = Float.valueOf( groupElement.getAttributeValue("totalPointsPossible") );
+                    category.weight = Float.valueOf( groupElement.getAttributeValue("weight") );
+                    category.letterGrade = groupElement.getAttributeValue("letterGrade").charAt(0);
+
+                    Element activities = groupElement.getFirstChildElement("activities");
+
+                    for (int k=0;k < activities.getChildCount();++k)
+                    {
+                        Element activityElement = activities.getChildElements().get(k);
+
+                        Activity a = new Activity( activityElement.getAttributeValue("name") );
+                        a.percentage = Float.valueOf( activityElement.getAttributeValue("percentage") );
+                        a.earnedPoints = Float.valueOf( activityElement.getAttributeValue("weightedScore") );
+                        a.totalPoints = Float.valueOf( activityElement.getAttributeValue("weightedTotalPoints") );
+                        a.dueDate = activityElement.getAttributeValue("dueDate");
+
+                        String letterGrade = activityElement.getAttributeValue("letterGrade");
+                        if (letterGrade != null)
+                            a.letterGrade = letterGrade;
+                        else
+                            a.letterGrade = "N/A";
+
+                        category.activities.add( a );
+                    }
+
+                    c.gradeCategories.add( category );
+                }
+
+                courses.add( c );
+            }
+
+            userInfo.courses = courses;
 		}
 		catch (Exception e)
 		{

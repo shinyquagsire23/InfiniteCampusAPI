@@ -13,7 +13,6 @@ public class InfiniteCampusApi
 {
 	public static DistrictInfo districtInfo;
 	public static Student userInfo;
-	public static ClassbookManager classbookInfo;
 	private static boolean isLoggedIn = false;
 	
 	private static URL getFormattedURL( String document )
@@ -63,7 +62,19 @@ public class InfiniteCampusApi
 			URL infoURL2 = getFormattedURL("prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + userInfo.personID + "&structureID=" + userInfo.calendars.get(0).schedules.get(0).id + "&calendarID=" + userInfo.calendars.get(0).calendarID);
 			Document doc2 = builder.build(new ByteArrayInputStream(core.getContent(infoURL2, false).getBytes()));
 			
-			classbookInfo = new ClassbookManager(doc2.getRootElement().getFirstChildElement("SectionClassbooks"));
+			ClassbookManager classbookInfo = new ClassbookManager(doc2.getRootElement().getFirstChildElement("SectionClassbooks"));
+
+            //please excuse this ungodly mess
+            for (int i=0; i < classbookInfo.portalclassbooks.size(); ++i)
+            {
+                for (int j=0;j < classbookInfo.portalclassbooks.get(i).students.size();++j)
+                {
+                    for (int k=0;k < classbookInfo.portalclassbooks.get(i).students.get(j).classbooks.size();++k)
+                    {
+                        userInfo.classbooks.add( classbookInfo.portalclassbooks.get(i).students.get(j).classbooks.get(k));
+                    }
+                }
+            }
 		}
 		catch (Exception e)
 		{
@@ -86,7 +97,6 @@ public class InfiniteCampusApi
 		if (isLoggedIn( ))
 		{
 			System.out.println(userInfo.getInfoString());
-			System.out.println(classbookInfo.getInfoString());
 		}
 		else
 		{

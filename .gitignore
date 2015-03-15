@@ -5,3 +5,4 @@
 /.idea/libraries
 local.properties
 .gradle
+*.iml

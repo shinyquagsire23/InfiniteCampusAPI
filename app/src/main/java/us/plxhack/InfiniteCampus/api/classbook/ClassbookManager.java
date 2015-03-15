@@ -7,12 +7,18 @@ import nu.xom.Elements;
 
 public class ClassbookManager
 {
-	ArrayList<PortalClassbook> portalclassbooks = new ArrayList<PortalClassbook>();
+    public ArrayList<PortalClassbook> portalclassbooks = new ArrayList<PortalClassbook>();
+
 	public ClassbookManager(Element classbook)
 	{
 		Elements e = classbook.getChildElements("PortalClassbook");
 		for(int i = 0; i < e.size(); i++)
-			portalclassbooks.add(new PortalClassbook(e.get(i)));
+        {
+            PortalClassbook pcb = new PortalClassbook(e.get(i));
+
+            if (pcb.students.size() != 0)
+                portalclassbooks.add( pcb );
+        }
 	}
 	
 	public String getInfoString()

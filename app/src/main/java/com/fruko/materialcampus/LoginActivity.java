@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import us.plxhack.InfiniteCampus.api.InfiniteCampusApi;
+import us.plxhack.InfiniteCampus.api.Student;
 
 
 public class LoginActivity extends Activity
@@ -120,7 +122,7 @@ public class LoginActivity extends Activity
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(district, username, password);
+            mAuthTask = new UserLoginTask( this, district, username, password );
             mAuthTask.execute((Void) null);
         }
     }
@@ -170,8 +172,12 @@ public class LoginActivity extends Activity
         private final String mPassword;
         private final String mDistrict;
 
-        UserLoginTask( String district, String user, String password)
+        private final Activity parentActivity;
+
+        UserLoginTask( Activity a, String district, String user, String password)
         {
+            parentActivity = a;
+
             mDistrict = district;
             mUser = user;
             mPassword = password;
@@ -191,8 +197,8 @@ public class LoginActivity extends Activity
 
             if (success)
             {
-                InfiniteCampusApi.printDebugInfo();
-                finish();
+                Intent intent = new Intent( parentActivity, ClassesActivity.class );
+                startActivity( intent );
             }
             else
             {

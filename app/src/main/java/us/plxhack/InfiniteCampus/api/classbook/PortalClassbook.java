@@ -14,8 +14,13 @@ public class PortalClassbook
 	{
 		this.sectionID = classbookElement.getAttributeValue("sectionID");
 		Elements e = classbookElement.getFirstChildElement("ClassbookDetail").getFirstChildElement("StudentList").getChildElements("Student");
+
 		for(int i = 0; i < e.size(); i++)
-			students.add(new Student(e.get(i)));
+        {
+            Student s = new Student(e.get(i));
+
+            students.add( s );
+        }
 	}
 	
 	public String getInfoString()

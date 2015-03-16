@@ -3,6 +3,9 @@ package com.fruko.materialcampus;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,7 +19,6 @@ import us.plxhack.InfiniteCampus.api.course.Course;
 public class ClassGradesActivity extends Activity
 {
     private ListView gradesList;
-    private ArrayAdapter<String> gradeListElements;
 
     private Course course;
 
@@ -26,9 +28,9 @@ public class ClassGradesActivity extends Activity
         setContentView(R.layout.activity_classgrades);
 
         course = InfiniteCampusApi.userInfo.courses.get(getIntent().getIntExtra(ClassesActivity.SELECTED_COURSE_ID, 0));
-        setTitle( getIntent().getStringExtra(ClassesActivity.SELECTED_COURSE_NAME) );
+        setTitle( course.getCourseName() );
 
-        ArrayList<String> gradesArray = new ArrayList<String>();
+        final ArrayList<String[]> gradesArray = new ArrayList<>();
 
         for (int i=0;i < course.gradeCategories.size();++i)
         {
@@ -38,14 +40,31 @@ public class ClassGradesActivity extends Activity
             {
                 us.plxhack.InfiniteCampus.api.course.Activity a = c.activities.get(j);
 
-                gradesArray.add(a.name + " (" + a.letterGrade + ")");
+                String[] newArray = {a.name, Float.toString(a.percentage) + "%"};
+                gradesArray.add(newArray);
             }
         }
 
-        gradeListElements = new ArrayAdapter<String>( this, android.R.layout.simple_list_item_1, gradesArray);
-
         gradesList = (ListView)findViewById( R.id.class_grades );
-        gradesList.setAdapter( gradeListElements );
+
+        gradesList.setAdapter(new ArrayAdapter<String[]>(this, R.layout.assignment_list_item, R.id.name, gradesArray)
+        {
+            public View getView(final int position, View convertView, ViewGroup parent)
+            {
+                View view;
+                if (convertView == null) {
+                    LayoutInflater infl = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                    convertView = infl.inflate(R.layout.assignment_list_item, parent, false);
+                }
+                view = super.getView(position, convertView, parent);
+
+                TextView name = (TextView) view.findViewById(R.id.name);
+                name.setText(gradesArray.get(position)[0]);
+                TextView grade = (TextView) view.findViewById(R.id.grade);
+                grade.setText(gradesArray.get(position)[1]);
+                return view;
+            }
+        });
     }
 
     protected void onStart()

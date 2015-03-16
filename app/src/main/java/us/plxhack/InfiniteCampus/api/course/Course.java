@@ -55,6 +55,11 @@ public class Course
         return courseName;
     }
 
+    public Float getPercent()
+    {
+        return percentage;
+    }
+
     public Teacher getTeacher()
     {
         return teacher;

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import us.plxhack.InfiniteCampus.api.InfiniteCampusApi;
@@ -26,9 +27,9 @@ public class ClassGradesActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classgrades);
-
         course = InfiniteCampusApi.userInfo.courses.get(getIntent().getIntExtra(ClassesActivity.SELECTED_COURSE_ID, 0));
-        setTitle( course.getCourseName() );
+        setTitle( course.getCourseName() + " - " +  new DecimalFormat("#.00").format(course.getPercent()) + "%");
+
 
         final ArrayList<String[]> gradesArray = new ArrayList<>();
 
@@ -40,7 +41,7 @@ public class ClassGradesActivity extends Activity
             {
                 us.plxhack.InfiniteCampus.api.course.Activity a = c.activities.get(j);
 
-                String[] newArray = {a.name, Float.toString(a.percentage) + "%"};
+                String[] newArray = {a.name, new DecimalFormat("#.00").format(a.percentage) + "%"};
                 gradesArray.add(newArray);
             }
         }

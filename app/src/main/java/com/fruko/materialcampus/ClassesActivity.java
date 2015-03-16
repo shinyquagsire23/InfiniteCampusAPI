@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import us.plxhack.InfiniteCampus.api.InfiniteCampusApi;
@@ -36,7 +37,7 @@ public class ClassesActivity extends Activity
         for (int i=0;i < InfiniteCampusApi.userInfo.courses.size(); ++i)
         {
             Course course = InfiniteCampusApi.userInfo.courses.get(i);
-            String[] newArray = {course.getCourseName(), Float.toString(course.getPercent()) + "%", course.getTeacherName()};
+            String[] newArray = {course.getCourseName(), new DecimalFormat("#.00").format(course.getPercent()) + "%", course.getTeacherName()};
             classNameArray.add(newArray);
         }
 

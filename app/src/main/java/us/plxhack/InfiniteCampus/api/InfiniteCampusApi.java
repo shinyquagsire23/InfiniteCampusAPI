@@ -135,13 +135,42 @@ public class InfiniteCampusApi
                         category.activities.add( a );
                     }
 
+                    category.sort();
+
                     c.gradeCategories.add( category );
                 }
 
                 courses.add( c );
             }
 
-            userInfo.courses = courses;
+            userInfo.courses = new ArrayList<Course>( );
+
+            //alphabetically sort course list
+            for (int i=0;i < courses.size();++i)
+            {
+                if (userInfo.courses.size() == 0)
+                {
+                    userInfo.courses.add( courses.get(i) );
+                }
+                else
+                {
+                    int placement = -1;
+
+                    for (int j=0;j < userInfo.courses.size();++j)
+                    {
+                        if (courses.get(i).getCourseName().compareTo(userInfo.courses.get(j).getCourseName()) < 0 && placement == -1)
+                        {
+                            placement = j;
+                            break;
+                        }
+                    }
+
+                    if (placement != -1)
+                        userInfo.courses.add( placement, courses.get(i) );
+                    else
+                        userInfo.courses.add( courses.get(i) );
+                }
+            }
 		}
 		catch (Exception e)
 		{

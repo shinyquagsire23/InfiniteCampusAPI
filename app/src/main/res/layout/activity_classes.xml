@@ -9,6 +9,5 @@
         android:id="@+id/class_list"
         android:layout_gravity="center_horizontal"
         android:headerDividersEnabled="true"
-        android:textSize="20sp"
-        android:padding="5dp"/>
+        android:textSize="20sp"/>
 </LinearLayout>

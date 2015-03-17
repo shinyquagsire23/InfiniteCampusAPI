@@ -3,12 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/class_swipe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/class_list"
-        android:layout_gravity="center_horizontal"
-        android:headerDividersEnabled="true"
-        android:textSize="20sp"
-        android:padding="5dp"/>
+        android:layout_height="match_parent">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/class_list"
+            android:layout_gravity="center_horizontal"
+            android:headerDividersEnabled="true"
+            android:textSize="20sp"
+            android:padding="5dp"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

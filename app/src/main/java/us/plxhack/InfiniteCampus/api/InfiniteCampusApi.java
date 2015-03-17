@@ -19,7 +19,9 @@ public class InfiniteCampusApi
 	public static DistrictInfo districtInfo;
 	public static Student userInfo;
 	private static boolean isLoggedIn = false;
-	
+
+    private static String _districtCode, _username, _password;
+
 	private static URL getFormattedURL( String document )
 	{
 		try
@@ -179,9 +181,20 @@ public class InfiniteCampusApi
 		}
 		
 		isLoggedIn = true;
+        _districtCode = districtCode;
+        _username = username;
+        _password = password;
 		return true;
 	}
-	
+
+    public static void relogin()
+    {
+        if (!isLoggedIn)
+            return;
+
+        login( _districtCode, _username, _password );
+    }
+
 	public static void printDebugInfo()
 	{
 		System.out.println("District Information:");

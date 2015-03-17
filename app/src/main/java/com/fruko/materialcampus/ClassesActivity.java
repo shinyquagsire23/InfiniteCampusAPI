@@ -2,6 +2,7 @@ package com.fruko.materialcampus;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -81,27 +82,12 @@ public class ClassesActivity extends ActionBarActivity
         getCourseList();
 
         final SwipeRefreshLayout swipeView = (SwipeRefreshLayout)findViewById( R.id.class_swipe );
-        swipeView.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
+        swipeView.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener()
+        {
             @Override
-            public void onRefresh() {
-                final Thread thread = new Thread(new Runnable()
-                {
-                    @Override
-                    public void run() {
-                        InfiniteCampusApi.relogin();
-                    }
-                });
-
-                thread.start();
-
-                while (thread.isAlive())
-                {
-                    //wait
-                }
-
-                getCourseList();
-
-                swipeView.setRefreshing( false );
+            public void onRefresh()
+            {
+                new UserRefreshTask( swipeView ).execute( (Void)null );
             }
         });
     }
@@ -140,5 +126,27 @@ public class ClassesActivity extends ActionBarActivity
     public void onBackPressed()
     {
         moveTaskToBack( true );
+    }
+
+    private class UserRefreshTask extends AsyncTask<Void, Void, Boolean>
+    {
+        private SwipeRefreshLayout swipeLayout;
+
+        public UserRefreshTask( SwipeRefreshLayout swipelayout )
+        {
+            swipeLayout = swipelayout;
+        }
+
+        @Override
+        protected Boolean doInBackground( Void... params)
+        {
+            return InfiniteCampusApi.relogin();
+        }
+
+        protected void onPostExecute( Boolean result )
+        {
+            getCourseList();
+            swipeLayout.setRefreshing( false );
+        }
     }
 }

@@ -187,12 +187,12 @@ public class InfiniteCampusApi
 		return true;
 	}
 
-    public static void relogin()
+    public static boolean relogin()
     {
         if (!isLoggedIn)
-            return;
+            return false;
 
-        login( _districtCode, _username, _password );
+        return login( _districtCode, _username, _password );
     }
 
 	public static void printDebugInfo()

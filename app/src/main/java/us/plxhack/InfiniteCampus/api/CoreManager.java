@@ -4,7 +4,9 @@ package us.plxhack.InfiniteCampus.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -46,7 +48,10 @@ public class CoreManager
 	{
 		try
 		{
-			URL loginURL = new URL(distInfo.getDistrictBaseURL() + "/verify.jsp?nonBrowser=true&username=" + user + "&password=" + pass + "&appName=" + distInfo.getDistrictAppName());
+            String encodedUser = URLEncoder.encode( user, "UTF-8" );
+            String encodedPass = URLEncoder.encode( pass, "UTF-8" );
+
+			URL loginURL = new URL( distInfo.getDistrictBaseURL() + "/verify.jsp?nonBrowser=true&username=" + encodedUser + "&password=" + encodedPass + "&appName=" + distInfo.getDistrictAppName());
 			String response = getContent(loginURL, true);
 			if(response.trim().equalsIgnoreCase("<authentication>success</authentication>"))
 				return true;

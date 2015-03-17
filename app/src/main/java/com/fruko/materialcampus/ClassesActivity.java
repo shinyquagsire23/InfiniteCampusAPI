@@ -87,7 +87,7 @@ public class ClassesActivity extends ActionBarActivity
             @Override
             public void onRefresh()
             {
-                new UserRefreshTask( swipeView ).execute( (Void)null );
+                new UserRefreshTask( swipeView ).execute();
             }
         });
     }

@@ -12,6 +12,8 @@
         android:id="@+id/name"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/grade"
         android:layout_toStartOf="@+id/grade" />
 
     <TextView
@@ -21,6 +23,7 @@
         android:text="grade"
         android:id="@+id/grade"
         android:layout_alignBottom="@+id/name"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

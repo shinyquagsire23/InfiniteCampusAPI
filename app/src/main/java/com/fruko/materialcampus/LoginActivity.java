@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,7 +29,7 @@ import us.plxhack.InfiniteCampus.api.InfiniteCampusApi;
 import us.plxhack.InfiniteCampus.api.Student;
 
 
-public class LoginActivity extends Activity
+public class LoginActivity extends ActionBarActivity
 {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.

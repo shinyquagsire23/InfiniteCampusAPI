@@ -2,10 +2,12 @@ package com.fruko.materialcampus;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +19,7 @@ import us.plxhack.InfiniteCampus.api.InfiniteCampusApi;
 import us.plxhack.InfiniteCampus.api.course.Category;
 import us.plxhack.InfiniteCampus.api.course.Course;
 
-public class ClassGradesActivity extends Activity
+public class ClassGradesActivity extends ActionBarActivity
 {
     private ListView gradesList;
 
@@ -30,6 +32,7 @@ public class ClassGradesActivity extends Activity
         course = InfiniteCampusApi.userInfo.courses.get(getIntent().getIntExtra(ClassesActivity.SELECTED_COURSE_ID, 0));
         setTitle( course.getCourseName() + " - " +  new DecimalFormat("#.00").format(course.getPercent()) + "%");
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         final ArrayList<String[]> gradesArray = new ArrayList<>();
 
@@ -41,7 +44,13 @@ public class ClassGradesActivity extends Activity
             {
                 us.plxhack.InfiniteCampus.api.course.Activity a = c.activities.get(j);
 
-                String[] newArray = {a.name, new DecimalFormat("#.00").format(a.percentage) + "%"};
+                String percent = "";
+                if (a.percentage == 0)
+                    percent = "0.00%";
+                else
+                    percent = new DecimalFormat("#.00").format(a.percentage) + "%";
+
+                String[] newArray = { a.name, percent };
                 gradesArray.add(newArray);
             }
         }

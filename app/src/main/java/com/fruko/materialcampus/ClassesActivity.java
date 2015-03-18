@@ -28,7 +28,7 @@ public class ClassesActivity extends ActionBarActivity
     public final static String SELECTED_COURSE_ID = "com.fruko.materialcampus.SELECTED_COURSE_ID";
 
     private ListView classList;
-    private boolean updateList = false;
+    private boolean canViewGrades = true;
 
     private void getCourseList()
     {
@@ -68,12 +68,18 @@ public class ClassesActivity extends ActionBarActivity
 
         classList.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (!canViewGrades)
+                    return;
+
                 Intent intent = new Intent( a, ClassGradesActivity.class );
                 intent.putExtra( SELECTED_COURSE_ID, position );
                 startActivity( intent );
             }
         });
+
+        canViewGrades = true;
     }
 
     protected void onCreate(Bundle savedInstanceState)
@@ -143,6 +149,7 @@ public class ClassesActivity extends ActionBarActivity
         @Override
         protected Boolean doInBackground( Void... params)
         {
+            canViewGrades = false;
             return InfiniteCampusApi.relogin();
         }
 
@@ -150,6 +157,7 @@ public class ClassesActivity extends ActionBarActivity
         {
             getCourseList();
             swipeLayout.setRefreshing( false );
+            canViewGrades = true;
         }
     }
 }

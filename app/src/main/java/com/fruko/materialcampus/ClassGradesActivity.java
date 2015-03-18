@@ -1,6 +1,7 @@
 package com.fruko.materialcampus;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +24,9 @@ import us.plxhack.InfiniteCampus.api.course.Course;
 public class ClassGradesActivity extends ActionBarActivity
 {
     private ListView gradesList;
+
+    public final static String SELECTED_COURSE_ID = "com.fruko.materialcampus.SELECTED_COURSE_ID";
+    public final static String SELECTED_ASSIGNMENT_ID = "com.fruko.materialcampus.SELECTED_ASSIGNMENT_ID";
 
     private Course course;
 
@@ -73,6 +78,21 @@ public class ClassGradesActivity extends ActionBarActivity
                 TextView grade = (TextView) view.findViewById(R.id.grade);
                 grade.setText(gradesArray.get(position)[1]);
                 return view;
+            }
+        });
+
+        final Activity a = this;
+
+        gradesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+
+                Intent intent = new Intent(a, AssignmentActivity.class);
+                intent.putExtra(SELECTED_COURSE_ID, getIntent().getIntExtra(ClassesActivity.SELECTED_COURSE_ID, 0));
+                intent.putExtra(SELECTED_ASSIGNMENT_ID, position);
+                startActivity(intent);
             }
         });
     }

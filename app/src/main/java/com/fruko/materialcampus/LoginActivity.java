@@ -45,6 +45,8 @@ public class LoginActivity extends ActionBarActivity
     private View mProgressView;
     private View mLoginFormView;
 
+    private AccountController accounts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -78,29 +80,12 @@ public class LoginActivity extends ActionBarActivity
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        try
-        {
-            FileInputStream file = openFileInput("login_info");
+        accounts = new AccountController( this );
 
-            int distLength, userLength, passLength;
+        AccountController.AccountDataContainer d = accounts.getFirstAccount();
 
-            distLength = (int)file.read();
-            userLength = (int)file.read();
-            passLength = (int)file.read();
-
-            byte[] district = new byte[distLength];
-            byte[] user = new byte[userLength];
-            byte[] pass = new byte[passLength];
-
-            file.read( district );
-            file.read( user );
-            file.read( pass );
-
-            file.close();
-
-            login( new String(district), new String(user), new String(pass), false );
-        }
-        catch (Exception e) { e.printStackTrace(); }
+        if (d != null)
+            login( d.district, d.username, d.password, false );
     }
 
     public void attemptLogin()
@@ -155,7 +140,7 @@ public class LoginActivity extends ActionBarActivity
         }
         else
         {
-            login( district, username, password, true );
+            login( district, username, password, mSavingInfo.isChecked() );
         }
     }
 
@@ -240,23 +225,7 @@ public class LoginActivity extends ActionBarActivity
             if (success)
             {
                 if (saving)
-                {
-                    try
-                    {
-                        FileOutputStream file = openFileOutput( "login_info", Context.MODE_PRIVATE );
-
-                        file.write( mDistrict.length() );
-                        file.write( mUser.length() );
-                        file.write( mPassword.length() );
-
-                        file.write( mDistrict.getBytes() );
-                        file.write( mUser.getBytes() );
-                        file.write( mPassword.getBytes() );
-
-                        file.close();
-                    }
-                    catch (Exception e){ e.printStackTrace(); }
-                }
+                    accounts.saveAccount( mUser, mPassword, mDistrict );
 
                 Intent intent = new Intent( parentActivity, ClassesActivity.class );
                 startActivity( intent );

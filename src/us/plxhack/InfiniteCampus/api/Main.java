@@ -25,11 +25,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Main
 {
-	public static String districtCode = "ZLSBJB";
 	static PrintWriter out;
 
 	public static void main(String[] args) throws Exception
 	{
+		Main main = new Main();
 		File f = new File("grades.txt");
 		if (f.exists())
 			f.delete();
@@ -42,6 +42,9 @@ public class Main
 			e.printStackTrace();
 			return;
 		}
+		
+		System.out.println("Please enter your district code:");
+		String districtCode = main.getInput();
 
 		CoreManager core = new CoreManager(districtCode);
 		print("Found District Information:");
@@ -51,13 +54,12 @@ public class Main
 		print("District App Name: " + core.getDistrictInfo().getDistrictAppName());
 
 		print("Attempting login...");
-		Console console = System.console();
-		console.printf("Username: ");
-		String username = console.readLine();
+		System.out.println("Username: ");
+		String username = main.getInput();
 
-		console.printf("Password: ");
-		char[] passwordChars = console.readPassword();
-		String passwordString = new String(passwordChars);
+		System.out.println("Password: ");
+		String passwordString = main.getInput();
+		System.out.println(passwordString);
 
 		print("Logging into user " + username + "...");
 		boolean successfulLogin = core.attemptLogin(username, passwordString, core.getDistrictInfo());
@@ -69,7 +71,7 @@ public class Main
 			return;
 		}
 
-		URL infoURL = new URL("https://campus.ccsd.net/campus/prism?x=portal.PortalOutline&appName=" + core.getDistrictInfo().getDistrictAppName());
+		URL infoURL = new URL(core.getDistrictInfo().getDistrictBaseURL() + "/prism?x=portal.PortalOutline&appName=" + core.getDistrictInfo().getDistrictAppName());
 		Builder builder = new Builder();
 		Document doc = builder.build(new ByteArrayInputStream(core.getContent(infoURL, false).getBytes()));
 		Element root = doc.getRootElement();
@@ -77,8 +79,8 @@ public class Main
 		print("\n");
 		print(user.getInfoString());
 
-		URL infoURL2 = new URL("https://campus.ccsd.net/campus/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
-		print("https://campus.ccsd.net/campus/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
+		URL infoURL2 = new URL(core.getDistrictInfo().getDistrictBaseURL() + "/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
+		print(core.getDistrictInfo().getDistrictBaseURL() + "/prism?&x=portal.PortalClassbook-getClassbookForAllSections&mode=classbook&personID=" + user.personID + "&structureID=" + user.calendars.get(0).schedules.get(0).id + "&calendarID=" + user.calendars.get(0).calendarID);
 		Document doc2 = builder.build(new ByteArrayInputStream(core.getContent(infoURL2, false).getBytes()));
 		ClassbookManager manager = new ClassbookManager(doc2.getRootElement().getFirstChildElement("SectionClassbooks"));
 		print(manager.getInfoString());
@@ -92,5 +94,19 @@ public class Main
 	{
 		System.out.println(s);
 		out.println(s);
+	}
+	
+	private String getInput() {
+	     String inputString = "";
+		try{
+		     BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+		     inputString = bufferRead.readLine();
+		 }
+		 catch(IOException ex)
+		 {
+		    ex.printStackTrace();
+		 }
+		
+		return inputString;
 	}
 }

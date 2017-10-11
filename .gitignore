@@ -1,4 +1,1 @@
-bin
-.project
-.classpath
-grades.txt
+target

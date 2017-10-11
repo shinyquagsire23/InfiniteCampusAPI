@@ -3,16 +3,12 @@ package us.plxhack.InfiniteCampus.api;
 //import android.os.AsyncTask;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import us.plxhack.InfiniteCampus.api.district.DistrictInfo;
@@ -22,7 +18,7 @@ public class CoreManager
 	private ObjectMapper mapper = new ObjectMapper();
 	private String cookies = "";
 	private DistrictInfo distInfo;
-    private String districtCode;
+    private String districtCode; // This is never actually used!!!
 
 	public CoreManager(String districtCode)
 	{

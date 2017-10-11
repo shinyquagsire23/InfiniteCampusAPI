@@ -3,25 +3,17 @@ package us.plxhack.InfiniteCampus.api;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.Console;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
 
-import javax.net.ssl.HttpsURLConnection;
-
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
 import us.plxhack.InfiniteCampus.api.classbook.ClassbookManager;
-import us.plxhack.InfiniteCampus.api.district.DistrictInfo;
-import nu.xom.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Main
 {

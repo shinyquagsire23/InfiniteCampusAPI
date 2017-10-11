@@ -2,11 +2,11 @@ package us.plxhack.InfiniteCampus.api;
 
 import java.util.ArrayList;
 
+import nu.xom.Element;
 import us.plxhack.InfiniteCampus.api.calendar.Calendar;
 import us.plxhack.InfiniteCampus.api.classbook.Classbook;
 import us.plxhack.InfiniteCampus.api.classbook.GradingDetailSummary;
 import us.plxhack.InfiniteCampus.api.district.DistrictInfo;
-import nu.xom.*;
 
 public class Student
 {

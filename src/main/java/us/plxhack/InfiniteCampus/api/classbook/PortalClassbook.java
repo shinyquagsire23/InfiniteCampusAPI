@@ -2,9 +2,9 @@ package us.plxhack.InfiniteCampus.api.classbook;
 
 import java.util.ArrayList;
 
-import us.plxhack.InfiniteCampus.api.Student;
 import nu.xom.Element;
 import nu.xom.Elements;
+import us.plxhack.InfiniteCampus.api.Student;
 
 public class PortalClassbook
 {
